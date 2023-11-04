@@ -29,7 +29,7 @@ dotenv.load_dotenv()
 	# Calculate the hash using SHA-256 algorithm
 	hash_object = hashlib.sha256(concatenated_values.encode('utf-8'))
 	token = hash_object.hexdigest()
-	logger.debug('shop.views(1159) buy token {} ',token)
+	logging.debug('shop.views(1159) buy token {} ',token)
 
 	payment_data = {
 			'TerminalKey':terminal_key,
@@ -77,15 +77,10 @@ dotenv.load_dotenv()
 
 	if response.json()['Success']:
 			payment_url = response.json()['PaymentURL']
-
 			# Redirect the user to the payment form
-
-			Certificate.objects.filter(id=cert.id).update(PaymentId=response.json()['PaymentId'])
-
 			# отправляем пользователя на платёжную форму
 			return redirect(payment_url)
-	else:
 			# result = False
-			message = response.json()['Message']+' '+response.json()['Details']
-			message.error(request, message)
-			logging.debug('shop.views() buy response payment_url response {} ',response.json())
+	message = response.json()['Message']+' '+response.json()['Details']
+	message.error(request, message)
+	logging.debug('shop.views() buy response payment_url response {} ',response.json())
