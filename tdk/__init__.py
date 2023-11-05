@@ -1,1 +1,0 @@
-from tdk.prime import *
